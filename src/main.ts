@@ -5,12 +5,13 @@ import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 
 import routes from "./routes";
-import { createMemoryHistory, createRouter } from "vue-router";
+
+import { createRouter, createWebHistory } from "vue-router";
 
 const app = createApp(App);
 
 const router = createRouter({
-    history: createMemoryHistory(),
+    history: createWebHistory(),
     routes
 })
 

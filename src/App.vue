@@ -6,7 +6,7 @@ import { RouterView } from "vue-router";
 <template>
   <nav class="m-4"><Navbar /></nav>
 
-  <main>
+  <main class="flex flex-col items-center h-[80vh]">
     <RouterView></RouterView>
   </main>
 </template>
