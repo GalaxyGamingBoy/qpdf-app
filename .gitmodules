@@ -1,0 +1,4 @@
+[submodule "libqpdf-rs"]
+	path = libqpdf-rs
+	url = https://gitlab.com/mitsiosm/libqpdf-rs.git
+	branch = master
