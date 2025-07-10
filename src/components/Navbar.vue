@@ -18,6 +18,11 @@ const items: Ref<MenuItem[]> = ref([
     icon: "merge_type",
     command: () => router.push("/pdf/merge"),
   },
+  {
+    label: "Split PDF",
+    icon: "call_split",
+    command: () => router.push("/pdf/split"),
+  },
 ]);
 </script>
 

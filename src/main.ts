@@ -4,6 +4,7 @@ import App from "./App.vue";
 import PrimeVue from 'primevue/config';
 import ToastService from 'primevue/toastservice';
 import Aura from '@primeuix/themes/aura';
+import Tooltip from 'primevue/tooltip';
 
 import routes from "./routes";
 
@@ -18,6 +19,8 @@ const router = createRouter({
 
 app.use(router)
 
+
+app.directive('tooltip', Tooltip);
 app.use(ToastService)
 app.use(PrimeVue, {
     theme: {
