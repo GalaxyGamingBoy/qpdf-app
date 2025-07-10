@@ -24,16 +24,22 @@ const str2file = (s: string): File => {
 };
 
 const getPDFs = async (): Promise<string[]> => {
+  if (import.meta.env.VITE_OUTSIDE_TAURI)
+    return ["~/Download/PlaceholderFile.pdf"];
+
   let diag = await open({
     multiple: true,
     directory: false,
     filters: [{ name: "PDF Files", extensions: ["pdf"] }],
   });
 
-  return diag!;
+  return diag ?? [];
 };
 
-const getOutPDF = async (): Promise<string> => {
+const getOutPDF = async (): Promise<string | null> => {
+  if (import.meta.env.VITE_OUTSIDE_TAURI)
+    return "~/Download/OutPlaceholderFile.pdf";
+
   let diag = await save({
     filters: [
       {
@@ -43,7 +49,7 @@ const getOutPDF = async (): Promise<string> => {
     ],
   });
 
-  return diag!;
+  return diag;
 };
 
 const addPDF = async () => {
@@ -56,9 +62,12 @@ const removePDF = (file: File) => {
 };
 
 const merge = async () => {
+  const out = await getOutPDF();
+  if (out == null) return;
+
   const success: boolean = await invoke("merge_all_pdfs", {
     pdfs: files.value.map((v) => v.file),
-    out: await getOutPDF(),
+    out,
   });
 
   if (!success)
