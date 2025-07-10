@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { open } from "@tauri-apps/plugin-dialog";
+import { invoke } from "@tauri-apps/api/core";
+import { open, save } from "@tauri-apps/plugin-dialog";
 import { Button, OrderList, Panel, Toast, useToast } from "primevue";
-import { Ref, ref } from "vue";
+import { computed, ComputedRef, Ref, ref } from "vue";
 
 interface File {
   idx: number;
@@ -10,24 +11,10 @@ interface File {
 
 const toast = useToast();
 
-const files: Ref<File[]> = ref([
-  {
-    idx: 0,
-    file: "~/Repos/libqpdf-rs/assets/testpdf1.pdf",
-  },
-  {
-    idx: 1,
-    file: "~/Repos/libqpdf-rs/assets/testpdf2.pdf",
-  },
-  {
-    idx: 2,
-    file: "~/Repos/libqpdf-rs/assets/testpdf3.pdf",
-  },
-  {
-    idx: 3,
-    file: "~/Repos/libqpdf-rs/assets/testpdf4.pdf",
-  },
-]);
+const files: Ref<File[]> = ref([]);
+const isFilesEmpty: ComputedRef<boolean> = computed(
+  () => files.value.length == 0
+);
 
 const str2file = (s: string): File => {
   return {
@@ -37,8 +24,6 @@ const str2file = (s: string): File => {
 };
 
 const getPDFs = async (): Promise<string[]> => {
-  if (import.meta.env.VITE_OUTSIDE_TAURI) return ["~/test.pdf"];
-
   let diag = await open({
     multiple: true,
     directory: false,
@@ -48,11 +33,22 @@ const getPDFs = async (): Promise<string[]> => {
   return diag!;
 };
 
+const getOutPDF = async (): Promise<string> => {
+  let diag = await save({
+    filters: [
+      {
+        name: "PDF File",
+        extensions: ["pdf"],
+      },
+    ],
+  });
+
+  return diag!;
+};
+
 const addPDF = async () => {
   let newFiles = await getPDFs();
-  let processedFiles: File[] = newFiles.map(str2file);
-
-  files.value = files.value.concat(processedFiles);
+  newFiles.forEach((file) => files.value.push(str2file(file)));
 };
 
 const removePDF = (file: File) => {
@@ -60,7 +56,17 @@ const removePDF = (file: File) => {
 };
 
 const merge = async () => {
-  console.log(files.value);
+  const success: boolean = await invoke("merge_all_pdfs", {
+    pdfs: files.value.map((v) => v.file),
+    out: await getOutPDF(),
+  });
+
+  if (!success)
+    return toast.add({
+      severity: "error",
+      summary: "PDF Merge",
+      detail: "There was an error merging the PDF Files",
+    });
 
   toast.add({
     severity: "success",
@@ -96,6 +102,12 @@ const merge = async () => {
       @click="addPDF()"
     />
 
-    <Button label="Merge All" :fluid="true" class="mt-2" @click="merge" />
+    <Button
+      label="Merge All"
+      :fluid="true"
+      class="mt-2"
+      @click="merge"
+      :disabled="isFilesEmpty"
+    />
   </Panel>
 </template>
