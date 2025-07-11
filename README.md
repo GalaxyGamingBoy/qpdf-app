@@ -1,16 +1,65 @@
-# Tauri + Vue + TypeScript
+# PDF Visual Toolkit based
+![GitLab Issues](https://img.shields.io/gitlab/issues/open/mitsiosm%2Fqpdf-app)
+![GitLab Merge Requests](https://img.shields.io/gitlab/merge-requests/open/mitsiosm%2Fqpdf-app)
+![GitLab License](https://img.shields.io/gitlab/license/mitsiosm%2Fqpdf-app)
+![GitLab Last Commit](https://img.shields.io/gitlab/last-commit/mitsiosm%2Fqpdf-app)
+  
+PDF Visual Toolkit based on [QPDF](https://github.com/qpdf/qpdf). Ever had to merge a pdf, reorganize it's pages or keep only a range of them? The PDF Visual Toolkit is a GUI application made in Rust with Tauri and QPDF that aims to solve those problems in a intuitive and FOSS application, without the need of all the other online tools. All of the PDF handling gets done by QPDF through the libqpdf-rs wrapper for rust made by me for this purpose.
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## Features
+ 
+- PDF Merging
+- PDF Splitting
+- PDF Reordering/Reorganizing
+- WIP
+## Tech Stack
 
-## Recommended IDE Setup
+- Vue
+- Rust
+- QPDF
+- Tauri
+## Feedback / Support
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+If you have any feedback or need support
++ Email me, [here](mailto:contact-project+mitsiosm-qpdf-app-71506270-issue-@incoming.gitlab.com)
++ Open a [Gitlab](https://gitlab.com/mitsiosm/qpdf-app) issue
++ Open a [Github](https://github.com/GalaxyGamingBoy/qpdf-app) issue (not preferred)
+## Acknowledgements
 
-## Type Support For `.vue` Imports in TS
+ - [QPDF Library](https://github.com/qpdf/qpdf)
+## Authors
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's Take Over mode by following these steps:
+- [@MitsiosM](https//gitlab.com/mitsiosm/)
 
-1. Run `Extensions: Show Built-in Extensions` from VS Code's command palette, look for `TypeScript and JavaScript Language Features`, then right click and select `Disable (Workspace)`. By default, Take Over mode will enable itself if the default TypeScript extension is disabled.
-2. Reload the VS Code window by running `Developer: Reload Window` from the command palette.
 
-You can learn more about Take Over mode [here](https://github.com/johnsoncodehk/volar/discussions/471).
+## Run Dev Locally
+
+Clone the project
+
+```bash
+  git clone https://gitlab.com/mitsiosm/qpdf-app.git
+```
+
+Go to the project directory
+
+```bash
+  cd qpdf-app
+```
+
+Initalize the Submodules
+
+```bash
+    git submodule init 
+    git submodule update
+```
+
+Run the development server
+
+```bash
+  pnpm tauri dev
+```
+### Environment Variables
+
+To run this project, you will need to add to add the appropriate app settings or user secrets.
+
+- `VITE_OUTSIDE_TAURI`: Set to true to use placeholder values when running outside of the tauri environment (e.g. only web dev server)
