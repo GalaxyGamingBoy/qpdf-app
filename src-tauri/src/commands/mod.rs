@@ -4,39 +4,7 @@ use libqpdf_rs::qpdf::{
     self, error::QPDFInternalErrorCode, read::QPDFReadParams, write::QPDFWriteParams,
 };
 
-use crate::types::PDFDetails;
-
-#[tauri::command]
-pub fn get_pdf_details(pdf: String) -> Option<PDFDetails> {
-    let mut pdf = PathBuf::from(pdf);
-    let qpdf = qpdf::QPDF::default();
-
-    let status = match qpdf.process_file(pdf.clone(), QPDFReadParams::default(), None) {
-        Ok(e) => e,
-        Err(_) => return None,
-    };
-
-    if status == QPDFInternalErrorCode::Errors {
-        return None;
-    }
-
-    let title = qpdf.pdf_get_info_key("/Title".to_string());
-    let title = match title {
-        Ok(v) => v,
-        Err(_) => {
-            pdf.set_extension("");
-            pdf.file_name().unwrap().to_str().unwrap().to_string()
-        }
-    };
-
-    let author = qpdf.pdf_get_info_key("/Author".to_string());
-    let author = match author {
-        Ok(v) => v,
-        Err(_) => "John Doe".to_string(),
-    };
-
-    Some(PDFDetails { title, author })
-}
+use crate::commands::details::get_pdf_details;
 
 #[tauri::command]
 pub fn split_pdf_to_pages(pdf: String, out: String, format: String) -> bool {
@@ -96,4 +64,5 @@ pub fn split_pdf_to_pages(pdf: String, out: String, format: String) -> bool {
     true
 }
 
+pub mod details;
 pub mod merge;
