@@ -6,7 +6,7 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             commands::merge::merge_all_pdfs,
             commands::details::get_pdf_details,
-            commands::split_pdf_to_pages
+            commands::split::split_pdf_to_pages
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
