@@ -22,22 +22,21 @@ interface PDFDetails {
 const toast = useToast();
 
 const selectedFile: Ref<string | null> = ref(null);
-const customOutputFormat: Ref<string> = ref("$title - $i/$n.pdf");
+const customOutputFormat: Ref<string> = ref("$title - ($i of $n).pdf");
 const hasCustomOutputFormat: Ref<boolean> = ref(false);
 const selectedFileDetails: Ref<PDFDetails | null> = ref(null);
 
 async function getPDFDetails(file: string | null): Promise<PDFDetails | null> {
   if (file == null) return null;
 
-  if (import.meta.env.VITE_OUTSIDE_TAURI)
+  if (import.meta.env.VITE_OUTSIDE_TAURI == true)
     return { title: "PDF Title Placeholder", author: "Lorem Ipsum" };
 
-  console.error("getPDFDetails WIP");
-  return { title: "", author: "" };
+  return await invoke("get_pdf_details", { pdf: file });
 }
 
 async function selectPDFDialog(): Promise<string | null> {
-  if (import.meta.env.VITE_OUTSIDE_TAURI)
+  if (import.meta.env.VITE_OUTSIDE_TAURI == true)
     return "~/Download/PlaceholderFile.pdf";
 
   let diag = await open({
@@ -50,7 +49,7 @@ async function selectPDFDialog(): Promise<string | null> {
 }
 
 async function selectOutputFolderDialog(): Promise<string | null> {
-  if (import.meta.env.VITE_OUTSIDE_TAURI) return "~/Download/";
+  if (import.meta.env.VITE_OUTSIDE_TAURI == true) return "~/Download/";
 
   let diag = await open({ multiple: false, directory: true });
   return diag;
@@ -61,7 +60,14 @@ async function onSelectPDF() {
 }
 
 async function onSplitPDF() {
-  const success: boolean = true;
+  const out = await selectOutputFolderDialog();
+  if (out == null) return;
+
+  const success: boolean = await invoke("split_pdf_to_pages", {
+    pdf: selectedFile.value,
+    format: customOutputFormat.value,
+    out,
+  });
 
   if (!success)
     return toast.add({
@@ -93,21 +99,21 @@ watch(selectedFile, async (file, _) => {
         </div>
       </template>
 
-      <InputGroup class="mb-2">
+      <InputGroup class="mb-1 h-12">
         <InputGroupAddon>
           <span class="material-symbols-outlined mx-2">article</span>
         </InputGroupAddon>
         <InputText disabled :value="selectedFile" />
       </InputGroup>
 
-      <InputGroup class="my-2">
+      <InputGroup class="my-1 h-12">
         <InputGroupAddon>
           <span class="material-symbols-outlined mx-2">title</span>
         </InputGroupAddon>
         <InputText disabled :value="selectedFileDetails?.title" />
       </InputGroup>
 
-      <InputGroup class="mt-2">
+      <InputGroup class="mt-1 h-12">
         <InputGroupAddon>
           <span class="material-symbols-outlined mx-2">person</span>
         </InputGroupAddon>
@@ -115,7 +121,7 @@ watch(selectedFile, async (file, _) => {
       </InputGroup>
     </Panel>
 
-    <InputGroup class="mt-2 mb-1">
+    <InputGroup class="mt-2">
       <InputGroupAddon>
         <Checkbox
           :binary="true"
