@@ -4,7 +4,7 @@ pub fn run() {
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_opener::init())
         .invoke_handler(tauri::generate_handler![
-            commands::merge_all_pdfs,
+            commands::merge::merge_all_pdfs,
             commands::get_pdf_details,
             commands::split_pdf_to_pages
         ])
@@ -14,3 +14,4 @@ pub fn run() {
 
 pub mod commands;
 pub mod types;
+pub mod utils;

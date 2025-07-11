@@ -24,7 +24,7 @@ const str2file = (s: string): File => {
 };
 
 const getPDFs = async (): Promise<string[]> => {
-  if (import.meta.env.VITE_OUTSIDE_TAURI)
+  if (import.meta.env.VITE_OUTSIDE_TAURI == true)
     return ["~/Download/PlaceholderFile.pdf"];
 
   let diag = await open({
@@ -37,7 +37,7 @@ const getPDFs = async (): Promise<string[]> => {
 };
 
 const getOutPDF = async (): Promise<string | null> => {
-  if (import.meta.env.VITE_OUTSIDE_TAURI)
+  if (import.meta.env.VITE_OUTSIDE_TAURI == true)
     return "~/Download/OutPlaceholderFile.pdf";
 
   let diag = await save({
