@@ -1,8 +1,6 @@
 use std::path::PathBuf;
 
-use libqpdf_rs::qpdf::{
-    self, error::QPDFInternalErrorCode, read::QPDFReadParams, write::QPDFWriteParams,
-};
+use libqpdf_rs::qpdf::error::QPDFInternalErrorCode;
 
 use crate::{
     commands::details::internal_get_pdf_details,
