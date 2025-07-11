@@ -90,7 +90,7 @@ watch(selectedFile, async (file, _) => {
 
 <template>
   <Toast />
-  <Panel header="Split PDF Pages" class="w-[80vw]">
+  <Panel header="Split PDF Pages" class="w-[86vw]">
     <Panel toggleable>
       <template #header>
         <div class="flex items-center gap-2">

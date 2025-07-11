@@ -23,6 +23,11 @@ const items: Ref<MenuItem[]> = ref([
     icon: "call_split",
     command: () => router.push("/pdf/split"),
   },
+  {
+    label: "Reorder PDF",
+    icon: "move_down",
+    command: () => router.push("/pdf/reorder"),
+  },
 ]);
 </script>
 

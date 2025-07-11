@@ -88,7 +88,7 @@ const merge = async () => {
 <template>
   <Toast />
 
-  <Panel header="Merge PDFs" class="w-[80vw]">
+  <Panel header="Merge PDFs" class="w-[86vw]">
     <OrderList v-model="files" data-key="idx" breakpoint="908">
       <template #option="{ option }">
         <span class="material-symbols-outlined mr-4"> picture_as_pdf </span>
