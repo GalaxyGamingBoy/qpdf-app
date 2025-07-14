@@ -71,9 +71,14 @@ async function onSelectPDF() {
 }
 
 async function onReorderPDF() {
-  // @ts-ignore
-  let out = selectOutPDFDialog();
-  let success = true;
+  let dest = await selectOutPDFDialog();
+  if (dest == null) return;
+
+  let success = await invoke("reorder_pdf", {
+    file: selectedPDF.value,
+    pages: pages.value,
+    dest,
+  });
 
   if (!success)
     return toast.add({

@@ -7,7 +7,8 @@ pub fn run() {
             commands::merge::merge_all_pdfs,
             commands::details::get_pdf_details,
             commands::split::split_pdf_to_pages,
-            commands::read::read_pdf_file
+            commands::read::read_pdf_file,
+            commands::reorder::reorder_pdf
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
