@@ -4,10 +4,11 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview",
-    "tauri": "tauri"
+    "dev": "pnpm run gen:pdfjs:worker && vite",
+    "build": "pnpm run gen:pdfjs:worker && vue-tsc --noEmit && vite build",
+    "preview": "pnpm run gen:pdfjs:worker && vite preview",
+    "tauri": "pnpm run gen:pdfjs:worker && tauri",
+    "gen:pdfjs:worker": "cp node_modules/pdfjs-dist/build/pdf.worker.mjs ./public"
   },
   "dependencies": {
     "@bokuweb/zstd-wasm": "^0.0.27",
