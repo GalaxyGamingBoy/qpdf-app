@@ -10,7 +10,7 @@ const props = defineProps(["page", "pdf"]);
 const pageNum = props.page ?? 1;
 
 const enlargedVisible = ref(false);
-const enlargedPanelHeader = `PDF Page ${pageNum}`;
+const enlargedPanelHeader = `PDF Page #${pageNum} Preview`;
 
 function getScaledViewport(
   page: PDFPageProxy,
