@@ -36,7 +36,7 @@ If you have any feedback or need support
 
 ## Authors
 
-- [@MitsiosM](https//gitlab.com/mitsiosm/)
+- [@MitsiosM](https://gitlab.com/mitsiosm/)
 
 
 ## Run Dev Locally
