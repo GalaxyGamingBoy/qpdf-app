@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { PageViewport, PDFDocumentProxy, PDFPageProxy } from "pdfjs-dist";
-import { Button, Drawer, SpeedDial } from "primevue";
+import { Button, Drawer } from "primevue";
 import { onMounted, ref, useTemplateRef, watch } from "vue";
 
 const canvas = useTemplateRef("canvas");
