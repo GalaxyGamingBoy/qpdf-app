@@ -3,7 +3,7 @@ import { Button, Panel, Toast, useToast } from "primevue";
 import Page from "../../components/pdf/Page.vue";
 import { onMounted, Ref, ref, shallowRef, ShallowRef } from "vue";
 import { open, save } from "@tauri-apps/plugin-dialog";
-import { decompressB64, decompressZSTD } from "../../lib/decompress";
+import { decompressB64 } from "../../lib/decompress";
 import { GlobalWorkerOptions, PDFDocumentProxy, getDocument } from "pdfjs-dist";
 import { samplePDF } from "../../lib/seed";
 import { invoke } from "@tauri-apps/api/core";
@@ -57,7 +57,7 @@ async function loadPDF(file: string) {
   if (loadedPDF.value != null) loadedPDF.value.destroy();
   loadedPDF.value = null;
 
-  const data = await decompressZSTD(decompressB64(await getPDFData(file)));
+  const data = await decompressB64(await getPDFData(file));
   const pdf = await getDocument({ data }).promise;
 
   pages.value = [...Array(pdf.numPages).keys()].map((v) => v + 1);
