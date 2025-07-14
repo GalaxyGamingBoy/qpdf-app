@@ -29,11 +29,5 @@ export default defineConfig(async () => ({
       // 3. tell vite to ignore watching `src-tauri`
       ignored: ["**/src-tauri/**"],
     },
-  },
-  optimizeDeps: {
-    exclude: ['@bokuweb/zstd-wasm'],
-    esbuildOptions: {
-      target: 'es2020',
-    },
-  },
+  }
 }));
