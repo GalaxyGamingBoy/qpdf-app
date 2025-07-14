@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@bokuweb/zstd-wasm':
+        specifier: ^0.0.27
+        version: 0.0.27
       '@primeuix/themes':
         specifier: ^1.2.1
         version: 1.2.1
@@ -80,6 +83,9 @@ packages:
   '@babel/types@7.28.0':
     resolution: {integrity: sha512-jYnje+JyZG5YThjHiF28oT4SIZLnYOcSBb6+SDaFIyzDVSkXQmQQYclJ2R+YxcdmK0AX6x1E5OQNtuh3jHDrUg==}
     engines: {node: '>=6.9.0'}
+
+  '@bokuweb/zstd-wasm@0.0.27':
+    resolution: {integrity: sha512-GDm2uOTK3ESjnYmSeLQifJnBsRCWajKLvN32D2ZcQaaCIJI/Hse9s74f7APXjHit95S10UImsRGkTsbwHmrtmg==}
 
   '@esbuild/aix-ppc64@0.25.5':
     resolution: {integrity: sha512-9o3TMmpmftaCMepOdA5k/yDw8SfInyzWWTjYTFCX3kPSDJMROQTb8jg+h9Cnwnmm1vOzvxN7gIfB5V2ewpjtGA==}
@@ -962,6 +968,8 @@ snapshots:
     dependencies:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.27.1
+
+  '@bokuweb/zstd-wasm@0.0.27': {}
 
   '@esbuild/aix-ppc64@0.25.5':
     optional: true

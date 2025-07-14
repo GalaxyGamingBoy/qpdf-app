@@ -10,6 +10,7 @@
     "tauri": "tauri"
   },
   "dependencies": {
+    "@bokuweb/zstd-wasm": "^0.0.27",
     "@primeuix/themes": "^1.2.1",
     "@tailwindcss/vite": "^4.1.11",
     "@tauri-apps/api": "^2",

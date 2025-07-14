@@ -30,4 +30,10 @@ export default defineConfig(async () => ({
       ignored: ["**/src-tauri/**"],
     },
   },
+  optimizeDeps: {
+    exclude: ['@bokuweb/zstd-wasm'],
+    esbuildOptions: {
+      target: 'es2020',
+    },
+  },
 }));

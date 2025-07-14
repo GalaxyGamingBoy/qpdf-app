@@ -1,13 +1,22 @@
 <script setup lang="ts">
 import { Button, Panel, Toast, useToast } from "primevue";
 import Page from "../../components/pdf/Page.vue";
-import { Ref, ref } from "vue";
+import { onMounted, Ref, ref, shallowRef, ShallowRef } from "vue";
 import { open, save } from "@tauri-apps/plugin-dialog";
+import { decompressB64, decompressZSTD } from "../../lib/decompress";
+import { GlobalWorkerOptions, PDFDocumentProxy, getDocument } from "pdfjs-dist";
+import { samplePDF } from "../../lib/seed";
+import { invoke } from "@tauri-apps/api/core";
 
 const toast = useToast();
 
-let pages = ref([1, 2]);
+let pages: Ref<number[]> = ref([]);
+let loadedPDF: ShallowRef<PDFDocumentProxy | null> = shallowRef(null);
 let selectedPDF: Ref<string | null> = ref(null);
+
+onMounted(async () => {
+  GlobalWorkerOptions.workerSrc = "/pdf.worker.mjs";
+});
 
 async function selectPDFDialog(): Promise<string | null> {
   if (import.meta.env.VITE_OUTSIDE_TAURI == "true")
@@ -38,11 +47,31 @@ async function selectOutPDFDialog(): Promise<string | null> {
   return diag;
 }
 
+async function getPDFData(file: string): Promise<string> {
+  if (import.meta.env.VITE_OUTSIDE_TAURI == "true") return samplePDF;
+
+  return await invoke("read_pdf_file", { file });
+}
+
+async function loadPDF(file: string) {
+  if (loadedPDF.value != null) loadedPDF.value.destroy();
+  loadedPDF.value = null;
+
+  const data = await decompressZSTD(decompressB64(await getPDFData(file)));
+  const pdf = await getDocument({ data }).promise;
+
+  pages.value = [...Array(pdf.numPages).keys()].map((v) => v + 1);
+
+  loadedPDF.value = pdf;
+}
+
 async function onSelectPDF() {
   selectedPDF.value = await selectPDFDialog();
+  await loadPDF(selectedPDF.value!);
 }
 
 async function onReorderPDF() {
+  // @ts-ignore
   let out = selectOutPDFDialog();
   let success = true;
 
@@ -109,7 +138,7 @@ function drop(e: DragEvent, to: number) {
           @dragstart="(e) => drag(e, p)"
           @drop="(e) => drop(e, p)"
         >
-          <Page :page="p" draggable="true"></Page>
+          <Page :page="p" :pdf="loadedPDF" draggable="true"></Page>
         </div>
       </div>
     </div>

@@ -1,7 +1,4 @@
-use std::{
-    fs::File,
-    io::{BufReader, Error},
-};
+use std::{fs::File, io::BufReader};
 
 use base64::Engine;
 

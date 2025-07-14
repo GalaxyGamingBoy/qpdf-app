@@ -1,16 +1,45 @@
 <script setup lang="ts">
-import { onMounted, useTemplateRef } from "vue";
+import { PageViewport, PDFDocumentProxy, PDFPageProxy } from "pdfjs-dist";
+import { onMounted, useTemplateRef, watch } from "vue";
 
 const canvas = useTemplateRef("canvas");
 
-const props = defineProps(["page"]);
+const props = defineProps(["page", "pdf"]);
+const pageNum = props.page ?? 1;
 
-onMounted(() => {
-  const ctx = canvas.value?.getContext("2d");
+function getScaledViewport(page: PDFPageProxy): PageViewport {
+  const original = page.getViewport({ scale: 1 });
 
-  const page = props.page ?? 0;
-  ctx?.fillText(`#${page}`, 6, 12);
-});
+  const scaleX = canvas.value!.width / original.width;
+  const scaleY = canvas.value!.height / original.height;
+  const scale = Math.min(scaleX, scaleY);
+
+  return page.getViewport({ scale });
+}
+
+async function render(doc: PDFDocumentProxy | null, page: number) {
+  const ctx = canvas.value!.getContext("2d")!;
+
+  if (doc == null) return;
+
+  const pdfPage = await doc.getPage(page);
+
+  const context = {
+    canvasContext: ctx,
+    viewport: getScaledViewport(pdfPage),
+  };
+
+  await pdfPage.render(context).promise;
+}
+
+watch(
+  () => props.pdf,
+  async (pdf, _) => {
+    await render(pdf, pageNum);
+  }
+);
+
+onMounted(async () => await render(props.pdf, pageNum));
 </script>
 
 <template>
