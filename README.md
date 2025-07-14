@@ -6,7 +6,7 @@
 ![GitLab Last Commit](https://img.shields.io/gitlab/last-commit/mitsiosm%2Fqpdf-app)
   
 > [!note]
-> This is an independent project and is not endorsed or affiliated by [qpdf](https://github.com/qpdf/qpdf)
+> This is an independent project and is not endorsed or affiliated with [qpdf](https://github.com/qpdf/qpdf)
 
 PDF Visual Toolkit based on [QPDF](https://github.com/qpdf/qpdf). Ever had to merge a pdf, reorganize it's pages or keep only a range of them? The PDF Visual Toolkit is a GUI application made in Rust with Tauri and QPDF that aims to solve those problems in a intuitive and FOSS application, without the need of all the other online tools. All of the PDF handling gets done by QPDF through the libqpdf-rs wrapper for rust made by me for this purpose.
 
